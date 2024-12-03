@@ -7,40 +7,46 @@ import CssBaseline from '@mui/material/CssBaseline';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 //import Box from '@mui/material/Box';
 //import Container from '@mui/material/Container';
+import Slide from '@mui/material/Slide';
 
-function ElevationScroll(props) {
+function HideOnScroll(props) {
   const { children, window } = props;
+  // Note that you normally won't need to set the window ref as useScrollTrigger
+  // will default to window.
+  // This is only being set here because the demo is in an iframe.
   const trigger = useScrollTrigger({
-    disableHysteresis: true,
-    threshold: 0,
     target: window ? window() : undefined,
   });
 
-  return children
-    ? React.cloneElement(children, {
-        elevation: trigger ? 4 : 0,
-      })
-    : null;
+  return (
+    <Slide appear={false} direction="down" in={!trigger}>
+      {children ?? <div />}
+    </Slide>
+  );
 }
 
-ElevationScroll.propTypes = {
+HideOnScroll.propTypes = {
   children: PropTypes.element,
+  /**
+   * Injected by the documentation to work in an iframe.
+   * You won't need it on your project.
+   */
   window: PropTypes.func,
 };
 
-export default function ElevateAppBar(props) {
+export default function HideAppBar(props) {
   return (
     <React.Fragment>
       <CssBaseline />
-      <ElevationScroll {...props}>
+      <HideOnScroll {...props}>
         <AppBar>
           <Toolbar>
-            <Typography variant="h4" component="div">
-              Eventos Deportivos Bogotá
+            <Typography variant="h5" component="div">
+              Eventos Deportivos Bogota
             </Typography>
           </Toolbar>
         </AppBar>
-      </ElevationScroll>
+      </HideOnScroll>
       <Toolbar />
     </React.Fragment>
   );

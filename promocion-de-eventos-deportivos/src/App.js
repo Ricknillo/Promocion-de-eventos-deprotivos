@@ -1,12 +1,12 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
 import React, { useState } from "react";
-import Header from "./Componentes/Header";
+//import Header from "./Componentes/Header";
 import SearchBar from "./Componentes/SearchBar";
 import EventList from "./Componentes/EventList";
 //import Footer from "./Componentes/Footer";
 //import RecipeReviewCard from "./Componentes/Tarjeta";
 //import Tablax4 from "./Componentes/Tablax4";
-//import Scroll from "./Componentes/Scroll";
+import Scroll from "./Componentes/Scroll";
 
 function App() {
   const [allEvents, setAllEvents] = useState([
@@ -158,12 +158,8 @@ function App() {
 
 
   return (
-    <div style={{
-      borderRadius: '3px',
-      border: '1px solid black',
-      margin: '1%',
-    }}>
-      <Header style={{ display: "flex", justifyContent: "center", alignItems: "center" }}/>
+    <div >
+      <Scroll></Scroll>
       <SearchBar onSearch={handleSearch} />
       {/* Mostrar eventos solo si NoHayEventos es falso */}
       {!NoHayEventos && <EventList events={events} />}
@@ -172,5 +168,12 @@ function App() {
   );
 }
 
+/*style={{
+  borderRadius: '3px',
+  border: '1px solid black',
+  margin: '1%',
+}} */
+//Margen general
+// <Header style={{ display: "flex", justifyContent: "center", alignItems: "center" }}/>
 
 export default App;
