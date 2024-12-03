@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { TextField, Button, Checkbox } from "@mui/material";
+import FormControlLabel from '@mui/material/FormControlLabel';
+
 
 const SearchBar = ({ onSearch }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -17,7 +19,7 @@ const SearchBar = ({ onSearch }) => {
   };
 
   return (
-    <div style={{ display: "flex", gap: "10px", padding: "20px", width: "75%" }}>
+    <div style={{ display: "flex", gap: "10px", padding: "20px", width: "95%" }}>
       <TextField
         label="Buscar eventos"
         variant="outlined"
@@ -25,21 +27,36 @@ const SearchBar = ({ onSearch }) => {
         onChange={handleChange} // Actualizamos los eventos automáticamente cuando se cambia el input
         fullWidth
       />
+      <FormControlLabel control={<Checkbox style={{ color: "#3393FF" }} />} label="Futbol" />
+      <FormControlLabel control={<Checkbox style={{ color: "#3393FF" }} />} label="Baloncesto" />
+      <FormControlLabel control={<Checkbox style={{ color: "#3393FF" }} />} label="Tenis" />
+      <FormControlLabel control={<Checkbox style={{ color: "#3393FF" }} />} label="Running" />
+      <FormControlLabel control={<Checkbox style={{ color: "#3393FF" }} />} label="Natacion" />
+      {/* <div style={{borderColor: "2px solid red"}}>
       <Checkbox> 
-        Futbol
-      </Checkbox>  
-      <Checkbox>  
-       Baloncesto
-      </Checkbox>
-      <Checkbox>
-        Natacion
-      </Checkbox>
-      <Checkbox>
-        Tenis
-      </Checkbox>
-      <Checkbox>
-       Running
-      </Checkbox>
+      </Checkbox> 
+      </div>
+      
+      <div>
+      <Checkbox> 
+      </Checkbox> 
+      </div>
+    
+      <div>
+      <Checkbox> 
+      </Checkbox> 
+      </div>
+    
+      <div>
+      <Checkbox> 
+      </Checkbox> 
+      </div>
+    
+      <div>
+      <Checkbox> 
+      </Checkbox> 
+      </div> */}
+
     </div>
   );
 };
