@@ -1,0 +1,11 @@
+#from django.shortcuts import render
+from django.http.response import JsonResponse
+from .models import Event
+
+# Create your views here.
+def json_events(_request):
+    # Esta view ("/json_events") está hecha para devolver los valores almacenados en el modelo "Event" en formato Json
+    events = Event.objects.values('name','date','location','requirements','sport') # Obtiene los valores de la base de datos bajo el modelo Event en tipo de dato QuerySet
+    events = list(events) # Transforma el tipo de dato a lista
+    return JsonResponse(data=events, safe=False) # Devuelve los valores en formato Json
+
