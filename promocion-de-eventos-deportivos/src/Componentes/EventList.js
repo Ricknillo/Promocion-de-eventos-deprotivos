@@ -1,15 +1,17 @@
 import React from 'react';
+import Grid from '@mui/material/Grid';
 import EventCard from './EventCard';
 
-
 const EventList = ({ events }) => {
-    return (
-      <div>
-        {events.map((event, index) => (
-          <EventCard key={index} event={event} />
-        ))}
-      </div>
-    );
-  };
-  
-  export default EventList;
+  return (
+    <Grid container spacing={2}>
+      {events.map((event) => (
+        <Grid item xs={12} sm={6} key={event.id}>
+          <EventCard event={event} />
+        </Grid>
+      ))}
+    </Grid>
+  );
+};
+
+export default EventList;
