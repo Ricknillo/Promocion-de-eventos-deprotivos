@@ -7,6 +7,8 @@ import EventList from "./Componentes/EventList";
 //import RecipeReviewCard from "./Componentes/Tarjeta";
 //import Tablax4 from "./Componentes/Tablax4";
 import Scroll from "./Componentes/Scroll";
+//import EventCard from "./Componentes/EventCard";
+import CardSupe from "./Componentes/CardSupe";
 
 function App() {
   const [allEvents, setAllEvents] = useState([
@@ -155,13 +157,14 @@ function App() {
     }
   };
 
-
+  
 
   return (
     <div >
       <Scroll></Scroll>
       <SearchBar onSearch={handleSearch} />
       {/* Mostrar eventos solo si NoHayEventos es falso */}
+      <CardSupe></CardSupe>
       {!NoHayEventos && <EventList events={events} />}
       {NoHayEventos && <div>No se encontraron eventos.</div>} {/* Mensaje cuando no hay eventos */}
     </div>

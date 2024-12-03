@@ -41,10 +41,11 @@ import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 //import image from '../promocion-de-eventos-deportivos/src/Img/P1.jpg';
+//No me dejo poner la imagen, da un error de que modulo no se encuentra
 import { Box } from '@mui/material';
 
-const ExpandMore = styled((props) => {
-  const { expand, ...other } = props;
+const ExpandMore = styled((event) => {
+  const { expand, ...other } = event;
   return <IconButton {...other} />;
 })(({ theme }) => ({
   marginLeft: 'auto',
