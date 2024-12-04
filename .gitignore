@@ -1,0 +1,5 @@
+/venv/*
+/pedbackend/venv/*
+/pedbackend/pedbackend/__pycache__/*
+/pedbackend/app/__pycache__/*
+/pedbackend/app/migrations/__pycache__/*
