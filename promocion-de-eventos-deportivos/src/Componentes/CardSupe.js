@@ -1,46 +1,50 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Grid from '@mui/material/Grid2';
 
-const bull = (
-  <Box
-    component="span"
-    sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
-  >
-    •
-  </Box>
-);
-
-const card = (
-  <React.Fragment>
-    <CardContent>
-      <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-        Word of the Day
-      </Typography>
-      <Typography variant="h5" component="div">
-        be{bull}nev{bull}o{bull}lent
-      </Typography>
-      <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>adjective</Typography>
-      <Typography variant="body2">
-        well meaning and kindly.
-        <br />
-        {'"a benevolent smile"'}
-      </Typography>
-    </CardContent>
-    <CardActions>
-      <Button size="small">Learn More</Button>
-    </CardActions>
-  </React.Fragment>
-);
-
-export default function OutlinedCard() {
+export default function BasicCard() {
   return (
-    <Box sx={{ minWidth: 275 }}>
-      <Card variant="outlined">{card}</Card>
-    </Box>
+    <Card
+      sx={{
+        border: "1px solid black",
+        borderRadius: "3px",
+        marginTop: "1%",
+        padding: "16px",
+        maxHeight: '430px' }}
+      
+    >
+      <CardContent>
+        <Typography gutterBottom sx={{ color: "text.secondary", fontSize: 20 }}>
+          "El deporte es una poderosa herramienta para crecer no solo
+          físicamente, sino también mental y emocionalmente. Participar en
+          diferentes disciplinas te enseña a superar desafíos, trabajar en
+          equipo, y mejorar tu disciplina y enfoque. Más allá de los beneficios
+          para la salud, el deporte te brinda la oportunidad de descubrir tu
+          potencial, hacer nuevos amigos y aprender lecciones valiosas sobre
+          esfuerzo y perseverancia. Inscribirte en un deporte es abrir la puerta
+          a nuevas experiencias, aumentar tu confianza y formar parte de una
+          comunidad que te apoya mientras persigues tus sueños. ¡Anímate a
+          unirte, porque cada paso en el deporte te acerca más a ser la mejor
+          versión de ti mismo!"
+        </Typography>
+      </CardContent>
+      <CardActions>
+      
+        <a
+          href="https://www.mindeporte.gov.co/"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ textDecoration: 'underline' }}
+          
+        >
+        
+        </a>
+      </CardActions>
+    </Card>
   );
 }

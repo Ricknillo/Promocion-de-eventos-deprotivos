@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { TextField, Button, Checkbox } from "@mui/material";
+import {  TextField, Button, Checkbox } from "@mui/material";
 import FormControlLabel from '@mui/material/FormControlLabel';
-
+import {InputAdornment } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import Grid from '@mui/material/Grid2';
 
 const SearchBar = ({ onSearch }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -10,55 +12,38 @@ const SearchBar = ({ onSearch }) => {
   const handleChange = (e) => {
     const term = e.target.value;
     setSearchTerm(term);
-    onSearch(term); // Llamar a la función del padre con el valor actualizado
-  };
-
-  // La función para manejar el clic en el botón de búsqueda (aunque ya no es esencial)
-  const handleSearch = () => {
-    onSearch(searchTerm);
+    onSearch(term); 
   };
 
   return (
-    <div style={{ display: "flex", gap: "10px", padding: "20px", width: "95%" }}>
+    <Grid
+    container
+    spacing={2}
+    sx={{
+      width: "100%",  // Asegura que ocupe todo el ancho disponible
+      justifyContent: "center",  // Centra horizontalmente
+      alignItems: "center",  // Centra verticalmente
+      padding: 0,  // Elimina el padding que rodea al componente
+    }}
+  >
+    <Grid item xs={12} sm={10} md={8} lg={6}>
       <TextField
         label="Buscar eventos"
         variant="outlined"
         value={searchTerm}
-        onChange={handleChange} // Actualizamos los eventos automáticamente cuando se cambia el input
+        onChange={handleChange}
         fullWidth
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <SearchIcon />
+            </InputAdornment>
+          ),
+        }}
       />
-      <FormControlLabel control={<Checkbox style={{ color: "#3393FF" }} />} label="Futbol" />
-      <FormControlLabel control={<Checkbox style={{ color: "#3393FF" }} />} label="Baloncesto" />
-      <FormControlLabel control={<Checkbox style={{ color: "#3393FF" }} />} label="Tenis" />
-      <FormControlLabel control={<Checkbox style={{ color: "#3393FF" }} />} label="Running" />
-      <FormControlLabel control={<Checkbox style={{ color: "#3393FF" }} />} label="Natacion" />
-      {/* <div style={{borderColor: "2px solid red"}}>
-      <Checkbox> 
-      </Checkbox> 
-      </div>
-      
-      <div>
-      <Checkbox> 
-      </Checkbox> 
-      </div>
-    
-      <div>
-      <Checkbox> 
-      </Checkbox> 
-      </div>
-    
-      <div>
-      <Checkbox> 
-      </Checkbox> 
-      </div>
-    
-      <div>
-      <Checkbox> 
-      </Checkbox> 
-      </div> */}
-
-    </div>
-  );
+    </Grid>
+  </Grid>
+);
 };
 
 export default SearchBar;

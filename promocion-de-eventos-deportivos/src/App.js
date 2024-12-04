@@ -1,14 +1,13 @@
-/* eslint-disable react/jsx-no-comment-textnodes */
-import React, { useState } from "react";
-//import Header from "./Componentes/Header";
+import React, { useState, useRef } from "react";
+import "../src/App.css";
+import Grid from "@mui/material/Grid2";
 import SearchBar from "./Componentes/SearchBar";
-import EventList from "./Componentes/EventList";
-//import Footer from "./Componentes/Footer";
-//import RecipeReviewCard from "./Componentes/Tarjeta";
-//import Tablax4 from "./Componentes/Tablax4";
-import Scroll from "./Componentes/Scroll";
-//import EventCard from "./Componentes/EventCard";
+import IndividualCards from "./Componentes/IndividualCards";
+import SearchBarHeader from "./Componentes/SearchBarHeader";
+import SeleccionarDeporte from "./Componentes/SwitchSports";
+import HeaderBar from "./Componentes/HeaderBar";
 import CardSupe from "./Componentes/CardSupe";
+import deportesImage from "./Img/Deportes.jpg";
 
 function App() {
   const [allEvents, setAllEvents] = useState([
@@ -19,7 +18,6 @@ function App() {
       requirements: "Inscripción previa",
       deporte: "Correr",
     },
-
     {
       name: "Torneo de Fútbol Amateur",
       date: "2024-01-10",
@@ -48,7 +46,6 @@ function App() {
       requirements: "Edad de 15 a 18 años",
       deporte: "Fútbol",
     },
-
     {
       name: "Torneo Nacional de Baloncesto",
       date: "2024-02-01",
@@ -77,7 +74,6 @@ function App() {
       requirements: "Estudiantes universitarios",
       deporte: "Baloncesto",
     },
-
     {
       name: "Campeonato Nacional de Natación",
       date: "2024-01-15",
@@ -106,7 +102,6 @@ function App() {
       requirements: "Nadadores de nivel avanzado",
       deporte: "Natación",
     },
-
     {
       name: "Torneo Internacional de Tenis",
       date: "2024-02-10",
@@ -138,16 +133,23 @@ function App() {
   ]);
 
   const [events, setEvents] = useState(allEvents);
-
   const [NoHayEventos, setNoHayEventos] = useState(false);
+  const switchStatesRef = useRef({});
+
+  const estilosContainer = {
+    margin: "1%",
+    padding: "1%",
+    borderRadius: "3px",
+    border: "1px solid black",
+    width: "100%",
+    boxSizing: "border-box",
+  };
 
   const handleSearch = (searchTerm) => {
     if (!searchTerm) {
-      // Si no hay término de búsqueda, restauramos todos los eventos
       setEvents(allEvents);
-      setNoHayEventos(false);  // Restauramos el estado de "No hay eventos"
+      setNoHayEventos(false); // Restauramos el estado de "No hay eventos"
     } else {
-      // Filtramos los eventos según el término de búsqueda
       const filteredEvents = allEvents.filter((event) =>
         event.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
@@ -157,26 +159,82 @@ function App() {
     }
   };
 
-  
-
   return (
-    <div >
-      <Scroll></Scroll>
-      <SearchBar onSearch={handleSearch} />
-      {/* Mostrar eventos solo si NoHayEventos es falso */}
-      <CardSupe></CardSupe>
-      {!NoHayEventos && <EventList events={events} />}
-      {NoHayEventos && <div>No se encontraron eventos.</div>} {/* Mensaje cuando no hay eventos */}
-    </div>
+    <Grid container sx={{ ...estilosContainer, overflowX: "hidden" }}>
+      <Grid
+        item
+        xs={12}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width:"100%",
+        }}
+      >
+        <Grid
+          item
+          xs={12}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width:"100%",
+          }}
+        >
+          <HeaderBar style={{ width: "70%" }} />
+        </Grid>
+      </Grid>
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={6} md={6}>
+          <CardSupe />
+        </Grid>
+        <Grid item xs={12} sm={6} md={6}>
+          <Grid container direction="column" style={{ height: "100%" }}>
+            <Grid item style={{ flex: 1 }}>
+              <SeleccionarDeporte switchStatesAttribute={switchStatesRef} />
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              style={{
+                flex: 1,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "17rem",
+              }}
+            >
+              <img
+                src={deportesImage}
+                alt="Deportes"
+                loading="lazy"
+                style={{
+                  maxWidth: "90%",
+                  maxHeight: "70%",
+                  width: "auto",
+                  height: "auto",
+                }}
+              />
+            </Grid>
+            <Grid
+              item
+              style={{
+                flex: 1,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <SearchBar onSearch={handleSearch} />
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+      {!NoHayEventos && <IndividualCards events={events} />}
+      {NoHayEventos && <div>No se encontraron eventos.</div>}{" "}
+      {/* Mensaje cuando no hay eventos */}
+    </Grid>
   );
 }
-
-/*style={{
-  borderRadius: '3px',
-  border: '1px solid black',
-  margin: '1%',
-}} */
-//Margen general
-// <Header style={{ display: "flex", justifyContent: "center", alignItems: "center" }}/>
 
 export default App;
