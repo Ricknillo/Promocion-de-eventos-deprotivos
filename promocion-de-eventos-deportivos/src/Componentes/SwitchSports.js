@@ -37,7 +37,7 @@ const SeleccionarDeporte = ({ switchStatesAttribute }) => {
       margin: "4%",
       marginTop: "2%",
       padding: "16px",
-      maxHeight: "430px",
+      maxHeight: "500px",
       
     }}>
       <Grid

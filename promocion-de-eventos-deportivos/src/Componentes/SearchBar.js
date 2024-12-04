@@ -4,7 +4,13 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import { InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Grid from "@mui/material/Grid2";
-import Paper from '@mui/material/Paper';
+import Paper from "@mui/material/Paper";
+import ManageSearchIcon from "@mui/icons-material/ManageSearch";
+import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
+import ScoreboardIcon from "@mui/icons-material/Scoreboard";
+import GolfCourseIcon from "@mui/icons-material/GolfCourse";
+import RollerSkatingIcon from "@mui/icons-material/RollerSkating";
+import SurfingIcon from "@mui/icons-material/Surfing";
 
 const SearchBar = ({ onSearch }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -30,12 +36,43 @@ const SearchBar = ({ onSearch }) => {
         padding: 0, // Elimina el padding que rodea al componente
       }}
     >
-      <Grid size={6}>
-        <Typography>Ingresa una palabra clave para realizar la busqueda</Typography>
+      <Grid size={12}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-around",
+            width: "100%",
+            marginBottom: "3%",
+            marginTop: "1%",
+          }}
+        >
+          <Paper
+            sx={{
+              width: "90%",
+            }}
+            elevation={3}
+          >
+            <Typography variant="h5" component="h1">
+              Ingresa una palabra clave para realizar la busqueda
+            </Typography>
+          </Paper>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent:"space-around",
+            marginTop: "4%",
+            marginBottom: "4%"
+          }}
+        >
+          <ContentPasteSearchIcon />
+          <ScoreboardIcon />
+          <GolfCourseIcon />
+          <RollerSkatingIcon />
+          <SurfingIcon />
+        </Box>
       </Grid>
-      <Grid size={6}>
-        <Paper elevation={0}>square corners</Paper>
-      </Grid>
+
       <Grid size={12}>
         <TextField
           label="Buscar eventos"
