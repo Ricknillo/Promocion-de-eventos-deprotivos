@@ -205,6 +205,7 @@ function App() {
           </Grid>
         </Grid>
       </Box>
+      
       {!NoHayEventos && <IndividualCards events={events} />}
       {NoHayEventos && <div>No se encontraron eventos.</div>}{" "}
       {/* Mensaje cuando no hay eventos */}
