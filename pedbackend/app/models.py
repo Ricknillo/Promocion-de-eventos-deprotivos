@@ -9,6 +9,8 @@ class Event(models.Model):
     location = models.CharField(max_length=255) # Lugar del evento
     requirements = models.CharField(max_length=255) # Requisitos del evento
     sport = models.CharField(max_length=255) # Deporte del evento
+    limit_date = models.DateField() # Fecha fin de inscripcion
+    min_age = models.SmallIntegerField() # Edad mínima para participar
 
     def __str__(self):
         # Definiendo la estructura del nombre que mostrará el objeto al ser llamado sin atributos

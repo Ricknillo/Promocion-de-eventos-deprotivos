@@ -16,12 +16,14 @@ class ItemAdmin(admin.ModelAdmin):
     location
     requirements
     sport
+    limit_date
+    min_age
     """
-    list_display = ('name', 'date', 'location', 'sport')
+    list_display = ('name', 'date', 'limit_date', 'location', 'sport', 'min_age')
     list_display_links = ('name',)
-    list_filter = ('date', 'location', 'sport')
+    list_filter = ('date', 'location', 'sport', 'limit_date', 'min_age')
     list_per_page = 10
     ordering = ('date', 'location', 'sport')
-    search_fields = ('date', 'location', 'sport')
+    search_fields = ('name', 'location', 'sport', 'min_age')
     exclude = ('id', )
 
