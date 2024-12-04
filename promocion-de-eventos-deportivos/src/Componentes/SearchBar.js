@@ -80,6 +80,7 @@ const SearchBar = ({ onSearch }) => {
           value={searchTerm}
           onChange={handleChange}
           fullWidth
+          
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
