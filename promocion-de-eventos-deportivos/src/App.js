@@ -14,7 +14,12 @@ import Box from "@mui/material/Box";
 
 function App() {
   const [respuestaDatos, setRespuestaDatos] = useState([]);
+
+
   const [events, setEvents] = useState([]);
+
+
+  
   const [NoHayEventos, setNoHayEventos] = useState(false);
   const [filteredEvents, setFilteredEvents] = useState([]);
   const switchStatesRef = useRef({});
@@ -236,6 +241,13 @@ function App() {
 
   // Llamada inicial a la URL con todos los deportes activos
   useEffect(() => {
+    const initialSwitchStates = {
+      Fútbol: true,
+      Baloncesto: true,
+      Tenis: true,
+      Natación: true,
+    };
+  
         switchStatesRef.current = initialSwitchStates;
 
     // Filtrar eventos por los deportes activos
