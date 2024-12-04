@@ -16,6 +16,7 @@ export default function StickyHeader() {
         borderRadius: "7px",
         border: "1px solid black",
         flexWrap: "wrap",
+        width:"98%",
         "@media (max-width: 600px)": {
           height: "auto",
           padding: "10px 0",

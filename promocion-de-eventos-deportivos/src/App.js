@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "../src/App.css";
 import Grid from "@mui/material/Grid2";
 import SearchBar from "./Componentes/SearchBar";
@@ -8,6 +8,7 @@ import SeleccionarDeporte from "./Componentes/SwitchSports";
 import HeaderBar from "./Componentes/HeaderBar";
 import CardSupe from "./Componentes/CardSupe";
 import deportesImage from "./Img/Deportes.jpg";
+import Box from "@mui/material/Box";
 
 function App() {
   const [allEvents, setAllEvents] = useState([
@@ -135,6 +136,24 @@ function App() {
   const [events, setEvents] = useState(allEvents);
   const [NoHayEventos, setNoHayEventos] = useState(false);
   const switchStatesRef = useRef({});
+  const [switchStates, setSwitchStates] = useState({});
+
+  useEffect(() => {
+    // Monitorizamos los cambios en switchStatesRef
+    const interval = setInterval(() => {
+      if (
+        JSON.stringify(switchStates) !== JSON.stringify(switchStatesRef.current)
+      ) {
+        setSwitchStates({ ...switchStatesRef.current });
+        console.log(
+          "Datos recibidos del componente hijo:",
+          switchStatesRef.current
+        );
+      }
+    }, 100);
+
+    return () => clearInterval(interval); // Limpiamos el intervalo al desmontar
+  }, [switchStates]);
 
   const estilosContainer = {
     margin: "1%",
@@ -162,74 +181,30 @@ function App() {
   return (
     <Grid container sx={{ ...estilosContainer, overflowX: "hidden" }}>
       <Grid
-        item
         xs={12}
         sx={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          width:"100%",
+          width: "100%",
         }}
       >
-        <Grid
-          item
-          xs={12}
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width:"100%",
-          }}
-        >
-          <HeaderBar style={{ width: "70%" }} />
-        </Grid>
+        <HeaderBar sx={{ width: "70%" }} />
       </Grid>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6} md={6}>
-          <CardSupe />
-        </Grid>
-        <Grid item xs={12} sm={6} md={6}>
-          <Grid container direction="column" style={{ height: "100%" }}>
-            <Grid item style={{ flex: 1 }}>
+      <Box sx={{ width: "100%" }}>
+        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 1, md: 1 }}>
+          <Grid size={12}>
+            <CardSupe />
+          </Grid>
+          <Grid size={6} >
               <SeleccionarDeporte switchStatesAttribute={switchStatesRef} />
             </Grid>
-            <Grid
-              item
-              xs={12}
-              style={{
-                flex: 1,
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "17rem",
-              }}
-            >
-              <img
-                src={deportesImage}
-                alt="Deportes"
-                loading="lazy"
-                style={{
-                  maxWidth: "90%",
-                  maxHeight: "70%",
-                  width: "auto",
-                  height: "auto",
-                }}
-              />
-            </Grid>
-            <Grid
-              item
-              style={{
-                flex: 1,
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <SearchBar onSearch={handleSearch} />
-            </Grid>
+
+          <Grid size={6}>
+            <SearchBar onSearch={handleSearch} />
           </Grid>
         </Grid>
-      </Grid>
+      </Box>
       {!NoHayEventos && <IndividualCards events={events} />}
       {NoHayEventos && <div>No se encontraron eventos.</div>}{" "}
       {/* Mensaje cuando no hay eventos */}
