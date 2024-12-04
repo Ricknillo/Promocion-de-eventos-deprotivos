@@ -24,6 +24,7 @@ SECRET_KEY = 'django-insecure-okuomw7n*@uj-ges8&o*@29fab79h!x7g%(5!k_^4zgsq0)9ir
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+CORS_ORIGIN_ALLOW_ALL = DEBUG
 
 ALLOWED_HOSTS = ['*']
 
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -48,8 +50,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
-
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+]
 ROOT_URLCONF = 'pedbackend.urls'
 
 TEMPLATES = [

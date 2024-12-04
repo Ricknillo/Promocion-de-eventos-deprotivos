@@ -9,8 +9,39 @@ import HeaderBar from "./Componentes/HeaderBar";
 import CardSupe from "./Componentes/CardSupe";
 import deportesImage from "./Img/Deportes.jpg";
 import Box from "@mui/material/Box";
+//import Peticion from "./ConsultaBBDD/fetchACT";
+//import fetchJsonhttp from "./ConsultaBBDD/fetchJsonhttp"
 
 function App() {
+
+  
+  const [respuestaDatos, setrespuestaDatos] = useState([]);
+
+  useEffect(() => {
+    // Función que hace la petición GET
+    const fetchJson = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:8000/json_events/");
+        if (!response.ok) {
+          throw new Error("Error en la petición: " + response.statusText);
+        }
+
+        
+        const data = await response.json();
+        setrespuestaDatos(data); 
+        console.log("Respuesta del servidor:", data); 
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+   
+    fetchJson();
+  }, []); 
+
+  
+  console.log("Respuesta datos tras consulta:", respuestaDatos);
+
   const [allEvents, setAllEvents] = useState([
     {
       name: "Carrera 5K",
@@ -139,7 +170,6 @@ function App() {
   const [switchStates, setSwitchStates] = useState({});
 
   useEffect(() => {
-    // Monitorizamos los cambios en switchStatesRef
     const interval = setInterval(() => {
       if (
         JSON.stringify(switchStates) !== JSON.stringify(switchStatesRef.current)
@@ -196,16 +226,15 @@ function App() {
           <Grid size={12}>
             <CardSupe />
           </Grid>
-          <Grid size={6} >
-              <SeleccionarDeporte switchStatesAttribute={switchStatesRef} />
-            </Grid>
+          <Grid size={6}>
+            <SeleccionarDeporte switchStatesAttribute={switchStatesRef} />
+          </Grid>
 
           <Grid size={6}>
             <SearchBar onSearch={handleSearch} />
           </Grid>
         </Grid>
       </Box>
-      
       {!NoHayEventos && <IndividualCards events={events} />}
       {NoHayEventos && <div>No se encontraron eventos.</div>}{" "}
       {/* Mensaje cuando no hay eventos */}

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Básica</title>
+</head>
+<body>
+    <h1>Hola Mundo</h1>
+    
+    <script>
+        // Realizar una petición GET a http://127.0.0.1:8000/json_events/
+        fetch('http://127.0.0.1:8000/json_events/')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error en la petición: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Respuesta del servidor:', data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    </script>
+</body>
+</html>
