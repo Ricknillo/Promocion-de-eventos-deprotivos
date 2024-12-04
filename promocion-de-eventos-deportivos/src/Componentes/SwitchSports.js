@@ -8,10 +8,10 @@ import PoolIcon from "@mui/icons-material/Pool";
 
 const SeleccionarDeporte = ({ switchStatesAttribute }) => {
   const [switchStates, setSwitchStates] = useState({
-    Futbol: { isActive: true, icon: <SportsSoccerIcon /> },
+    Fútbol: { isActive: true, icon: <SportsSoccerIcon /> },
     Baloncesto: { isActive: true, icon: <SportsBasketballIcon /> },
     Tenis: { isActive: true, icon: <SportsTennisIcon /> },
-    Natacion: { isActive: true, icon: <PoolIcon /> },
+    Natación: { isActive: true, icon: <PoolIcon /> },
   });
 
   const handleSwitchChange = (name) => (event) => {
@@ -21,40 +21,40 @@ const SeleccionarDeporte = ({ switchStatesAttribute }) => {
     };
     setSwitchStates(newState);
 
+    // Aquí corregimos el uso de switchStatesAttribute
     if (switchStatesAttribute) {
       const simplifiedState = Object.keys(newState).reduce((acc, key) => {
         acc[key] = newState[key].isActive;
         return acc;
       }, {});
-      switchStatesAttribute.current = simplifiedState;
+      switchStatesAttribute(simplifiedState); // Llamamos a la función y pasamos el estado simplificado
     }
   };
-
   return (
-    <Box  sx={{
-      border: "1px solid black",
-      borderRadius: "3px",
-      margin: "4%",
-      marginTop: "2%",
-      padding: "16px",
-      maxHeight: "500px",
-      
-    }}>
+    <Box
+      sx={{
+        border: "2px solid blue",
+        borderRadius: "3px",
+        margin: "4%",
+        marginTop: "2%",
+        padding: "16px",
+        maxHeight: "500px",
+      }}
+    >
       <Grid
         container
         spacing={{ xs: 2, md: 3 }}
         columns={{ xs: 4, sm: 6, md: 12 }}
         alignItems="center"
         justifyContent="center"
-       
       >
         <Grid size={12} sx={{ display: "flex", justifyContent: "center" }}>
-          <Typography variant="h5" component="h1">
+          <Typography variant="h5" component="h1" m={1}>
             Selecciona tu deporte
           </Typography>
         </Grid>
 
-        <Grid container spacing={2} sx={{ justifyContent: "center" }}>
+        <Grid container spacing={2} sx={{ justifyContent: "center" }} m={1}>
           {Object.keys(switchStates).map((key) => (
             <Grid
               item

@@ -13,38 +13,29 @@ import Box from "@mui/material/Box";
 //import fetchJsonhttp from "./ConsultaBBDD/fetchJsonhttp"
 
 function App() {
+  const [respuestaDatos, setRespuestaDatos] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [NoHayEventos, setNoHayEventos] = useState(false);
+  const [filteredEvents, setFilteredEvents] = useState([]);
+  const switchStatesRef = useRef({});
 
+  const [switchStates, setSwitchStates] = useState({});
 
-  const [respuestaDatos, setrespuestaDatos] = useState([]);
+  const initialSwitchStates = {
+    Fútbol: true,
+    Baloncesto: true,
+    Tenis: true,
+    Natación: true,
+  };
 
-  useEffect(() => {
-    // Función que hace la petición GET
-    const fetchJson = async () => {
-      try {
-        const response = await fetch("http://127.0.0.1:8000/json_events/");
-        if (!response.ok) {
-          throw new Error("Error en la petición: " + response.statusText);
-        }
-
-        
-        const data = await response.json();
-        setrespuestaDatos(data); 
-        console.log("Respuesta del servidor:", data); 
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    };
-
-   
-    fetchJson();
-  }, []); 
-
-  
-  console.log("Respuesta datos tras consulta:", respuestaDatos);
-
-  
-  
-
+  const estilosContainer = {
+    margin: "1%",
+    padding: "1%",
+    borderRadius: "3px",
+    border: "2px solid blue",
+    width: "100%",
+    boxSizing: "border-box",
+  };
 
   const [allEvents, setAllEvents] = useState([
     {
@@ -167,50 +158,93 @@ function App() {
       deporte: "Tenis",
     },
   ]);
-  console.log("datos actuales:", allEvents);
-  const [events, setEvents] = useState(respuestaDatos);
-  const [NoHayEventos, setNoHayEventos] = useState(false);
-  const switchStatesRef = useRef({});
-  const [switchStates, setSwitchStates] = useState({});
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (
-        JSON.stringify(switchStates) !== JSON.stringify(switchStatesRef.current)
-      ) {
-        setSwitchStates({ ...switchStatesRef.current });
-        console.log(
-          "Datos recibidos del componente hijo:",
-          switchStatesRef.current
-        );
+  //console.log("Datos de prueba:", allEvents);
+
+
+
+  const fetchEvents = async (activeSports) => {
+    try {
+      // Si no hay deportes activos, no hacer la petición
+      if (activeSports.length === 0) {
+        setEvents([]);
+        setNoHayEventos(true);
+        return;
       }
-    }, 100);
 
-    return () => clearInterval(interval); // Limpiamos el intervalo al desmontar
-  }, [switchStates]);
+      const response = await fetch("http://127.0.0.1:8000/json_events/");
+      if (!response.ok) {
+        throw new Error("Error en la petición: " + response.statusText);
+      }
 
-  const estilosContainer = {
-    margin: "1%",
-    padding: "1%",
-    borderRadius: "3px",
-    border: "1px solid black",
-    width: "100%",
-    boxSizing: "border-box",
+      const data = await response.json();
+      console.log("respuesta de la primera petición, sin filtros", data);
+
+
+
+      // Filtrar los eventos por los deportes activos
+      const filteredBySport = data.filter((event) =>
+        activeSports.includes(event.sport)
+      );
+
+      setEvents(filteredBySport);
+      setNoHayEventos(filteredBySport.length === 0);
+      setRespuestaDatos(data); // Guardamos todos los eventos para futuras búsquedas
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
+
+
+
+
+  // Filtrar eventos por búsqueda (nombre o deporte)
   const handleSearch = (searchTerm) => {
     if (!searchTerm) {
-      setEvents(respuestaDatos);
-      setNoHayEventos(false); // Restauramos el estado de "No hay eventos"
+      setEvents(respuestaDatos); // Si no hay búsqueda, se muestran todos los eventos filtrados por deporte
+      setNoHayEventos(false);
     } else {
-      const filteredEvents = respuestaDatos.filter((event) =>
-        event.name.toLowerCase().includes(searchTerm.toLowerCase())
+      const filteredEvents = events.filter(
+        (event) =>
+          event.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          event.sport.toLowerCase().includes(searchTerm.toLowerCase())
       );
 
       setEvents(filteredEvents);
-      setNoHayEventos(filteredEvents.length === 0); // Si no hay resultados, mostramos el mensaje
+      setNoHayEventos(filteredEvents.length === 0);
     }
   };
+
+  useEffect(() => {
+    console.log("Datos recibidos del componente hijo:", switchStates);
+  }, [switchStates]); // Observa el cambio en switchStates
+
+
+
+  // Manejar cambios en los switches
+  const handleSwitchChange = (switchState) => {
+    switchStatesRef.current = switchState;
+
+    const activeSports = Object.keys(switchState).filter(
+      (sport) => switchState[sport] === true
+    );
+
+    // Realizar una nueva petición con los deportes activos
+    fetchEvents(activeSports);
+  };
+
+  // Llamada inicial a la URL con todos los deportes activos
+  useEffect(() => {
+        switchStatesRef.current = initialSwitchStates;
+
+    // Filtrar eventos por los deportes activos
+    const activeSports = Object.keys(initialSwitchStates).filter(
+      (sport) => initialSwitchStates[sport] === true
+    );
+
+    fetchEvents(activeSports);
+  }, []); // Se ejecuta solo una vez cuando se carga la página
 
   return (
     <Grid container sx={{ ...estilosContainer, overflowX: "hidden" }}>
@@ -231,7 +265,7 @@ function App() {
             <CardSupe />
           </Grid>
           <Grid size={6}>
-            <SeleccionarDeporte switchStatesAttribute={switchStatesRef} />
+            <SeleccionarDeporte switchStatesAttribute={handleSwitchChange} />
           </Grid>
 
           <Grid size={6}>
@@ -239,9 +273,31 @@ function App() {
           </Grid>
         </Grid>
       </Box>
-      {!NoHayEventos && <IndividualCards events={events} />}
-      {NoHayEventos && <div>No se encontraron eventos.</div>}{" "}
-      {/* Mensaje cuando no hay eventos */}
+      {!NoHayEventos && (
+        <Box
+          sx={{
+            width: "100%",
+            alignItems: "center",
+          }}
+        >
+          <IndividualCards events={events} />
+        </Box>
+      )}
+      {NoHayEventos && (
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+
+            fontWeight: "bold",
+            fontSize: "2.5rem",
+          }}
+        >
+          <div>No se encontraron eventos.</div>
+        </Box>
+      )}{" "}
     </Grid>
   );
 }

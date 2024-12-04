@@ -13,7 +13,7 @@ export default function BasicCard() {
   return (
     <Card
       sx={{
-        border: "1px solid black",
+        border: "2px solid blue",
         borderRadius: "3px",
         marginTop: "3%",
         padding: "16px",
@@ -28,7 +28,7 @@ export default function BasicCard() {
         }}
       >
         
-        <Typography gutterBottom sx={{ color: "text.secondary", fontSize: 20 }}>
+        <Typography gutterBottom sx={{ color: "black", fontSize: 20 }}>
         <SportsHandballIcon/> "El deporte es una poderosa herramienta para crecer no solo
           físicamente, sino también mental y emocionalmente. Participar en
           diferentes disciplinas te enseña a superar desafíos, trabajar en

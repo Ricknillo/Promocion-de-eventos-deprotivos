@@ -25,44 +25,28 @@ const SearchBar = ({ onSearch }) => {
   return (
     <Box
       sx={{
-        border: "1px solid black",
+        border: "2px solid blue",
         borderRadius: "3px",
         margin: "4%",
         marginTop: "2%",
-        //padding: "16px",
-        //height: "430px",
-        justifyContent: "center", // Centra horizontalmente
-        alignItems: "center", // Centra verticalmente
-        padding: 0, // Elimina el padding que rodea al componente
+       
+        display: "flex", 
+        flexDirection: "column", 
+        justifyContent: "center", 
+        alignItems: "center", 
       }}
     >
       <Grid size={12}>
+        <Typography variant="h5" component="h1" m={1}>
+          Ingresa una palabra clave para realizar la busqueda
+        </Typography>
+
         <Box
           sx={{
             display: "flex",
             justifyContent: "space-around",
-            width: "100%",
-            marginBottom: "3%",
-            marginTop: "1%",
-          }}
-        >
-          <Paper
-            sx={{
-              width: "90%",
-            }}
-            elevation={3}
-          >
-            <Typography variant="h5" component="h1">
-              Ingresa una palabra clave para realizar la busqueda
-            </Typography>
-          </Paper>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent:"space-around",
             marginTop: "4%",
-            marginBottom: "4%"
+            marginBottom: "4%",
           }}
         >
           <ContentPasteSearchIcon />
@@ -73,7 +57,7 @@ const SearchBar = ({ onSearch }) => {
         </Box>
       </Grid>
 
-      <Grid size={12}>
+      <Grid size={8} m={2}>
         <TextField
           label="Buscar eventos"
           variant="outlined"
