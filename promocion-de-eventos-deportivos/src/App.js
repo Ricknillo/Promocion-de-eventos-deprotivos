@@ -14,7 +14,7 @@ import Box from "@mui/material/Box";
 
 function App() {
 
-  
+
   const [respuestaDatos, setrespuestaDatos] = useState([]);
 
   useEffect(() => {
@@ -41,6 +41,10 @@ function App() {
 
   
   console.log("Respuesta datos tras consulta:", respuestaDatos);
+
+  
+  
+
 
   const [allEvents, setAllEvents] = useState([
     {
@@ -163,8 +167,8 @@ function App() {
       deporte: "Tenis",
     },
   ]);
-
-  const [events, setEvents] = useState(allEvents);
+  console.log("datos actuales:", allEvents);
+  const [events, setEvents] = useState(respuestaDatos);
   const [NoHayEventos, setNoHayEventos] = useState(false);
   const switchStatesRef = useRef({});
   const [switchStates, setSwitchStates] = useState({});
@@ -196,10 +200,10 @@ function App() {
 
   const handleSearch = (searchTerm) => {
     if (!searchTerm) {
-      setEvents(allEvents);
+      setEvents(respuestaDatos);
       setNoHayEventos(false); // Restauramos el estado de "No hay eventos"
     } else {
-      const filteredEvents = allEvents.filter((event) =>
+      const filteredEvents = respuestaDatos.filter((event) =>
         event.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
 
