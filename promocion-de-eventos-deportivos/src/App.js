@@ -1,14 +1,42 @@
-/* eslint-disable react/jsx-no-comment-textnodes */
-import React, { useState } from "react";
-import Header from "./Componentes/Header";
+import React, { useState, useRef, useEffect } from "react";
+import "../src/App.css";
+import Grid from "@mui/material/Grid2";
 import SearchBar from "./Componentes/SearchBar";
-import EventList from "./Componentes/EventList";
-//import Footer from "./Componentes/Footer";
-//import RecipeReviewCard from "./Componentes/Tarjeta";
-//import Tablax4 from "./Componentes/Tablax4";
-//import Scroll from "./Componentes/Scroll";
+import IndividualCards from "./Componentes/IndividualCards";
+import SearchBarHeader from "./Componentes/SearchBarHeader";
+import SeleccionarDeporte from "./Componentes/SwitchSports";
+import HeaderBar from "./Componentes/HeaderBar";
+import CardSupe from "./Componentes/CardSupe";
+import deportesImage from "./Img/Deportes.jpg";
+import Box from "@mui/material/Box";
+//import Peticion from "./ConsultaBBDD/fetchACT";
+//import fetchJsonhttp from "./ConsultaBBDD/fetchJsonhttp"
 
 function App() {
+  const [respuestaDatos, setRespuestaDatos] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [NoHayEventos, setNoHayEventos] = useState(false);
+  const [filteredEvents, setFilteredEvents] = useState([]);
+  const switchStatesRef = useRef({});
+
+  const [switchStates, setSwitchStates] = useState({});
+
+  const initialSwitchStates = {
+    Fútbol: true,
+    Baloncesto: true,
+    Tenis: true,
+    Natación: true,
+  };
+
+  const estilosContainer = {
+    margin: "1%",
+    padding: "1%",
+    borderRadius: "3px",
+    border: "2px solid blue",
+    width: "100%",
+    boxSizing: "border-box",
+  };
+
   const [allEvents, setAllEvents] = useState([
     {
       name: "Carrera 5K",
@@ -17,7 +45,6 @@ function App() {
       requirements: "Inscripción previa",
       deporte: "Correr",
     },
-
     {
       name: "Torneo de Fútbol Amateur",
       date: "2024-01-10",
@@ -46,7 +73,6 @@ function App() {
       requirements: "Edad de 15 a 18 años",
       deporte: "Fútbol",
     },
-
     {
       name: "Torneo Nacional de Baloncesto",
       date: "2024-02-01",
@@ -75,7 +101,6 @@ function App() {
       requirements: "Estudiantes universitarios",
       deporte: "Baloncesto",
     },
-
     {
       name: "Campeonato Nacional de Natación",
       date: "2024-01-15",
@@ -104,7 +129,6 @@ function App() {
       requirements: "Nadadores de nivel avanzado",
       deporte: "Natación",
     },
-
     {
       name: "Torneo Internacional de Tenis",
       date: "2024-02-10",
@@ -135,42 +159,147 @@ function App() {
     },
   ]);
 
-  const [events, setEvents] = useState(allEvents);
+  //console.log("Datos de prueba:", allEvents);
 
-  const [NoHayEventos, setNoHayEventos] = useState(false);
 
-  const handleSearch = (searchTerm) => {
-    if (!searchTerm) {
-      // Si no hay término de búsqueda, restauramos todos los eventos
-      setEvents(allEvents);
-      setNoHayEventos(false);  // Restauramos el estado de "No hay eventos"
-    } else {
-      // Filtramos los eventos según el término de búsqueda
-      const filteredEvents = allEvents.filter((event) =>
-        event.name.toLowerCase().includes(searchTerm.toLowerCase())
+
+  const fetchEvents = async (activeSports) => {
+    try {
+      // Si no hay deportes activos, no hacer la petición
+      if (activeSports.length === 0) {
+        setEvents([]);
+        setNoHayEventos(true);
+        return;
+      }
+
+      const response = await fetch("http://127.0.0.1:8000/json_events/");
+      if (!response.ok) {
+        throw new Error("Error en la petición: " + response.statusText);
+      }
+
+      const data = await response.json();
+      console.log("respuesta de la primera petición, sin filtros", data);
+
+
+
+      // Filtrar los eventos por los deportes activos
+      const filteredBySport = data.filter((event) =>
+        activeSports.includes(event.sport)
       );
 
-      setEvents(filteredEvents);
-      setNoHayEventos(filteredEvents.length === 0); // Si no hay resultados, mostramos el mensaje
+      setEvents(filteredBySport);
+      setNoHayEventos(filteredBySport.length === 0);
+      setRespuestaDatos(data); // Guardamos todos los eventos para futuras búsquedas
+    } catch (error) {
+      console.error("Error:", error);
     }
   };
 
 
 
+
+
+  // Filtrar eventos por búsqueda (nombre o deporte)
+  const handleSearch = (searchTerm) => {
+    if (!searchTerm) {
+      setEvents(respuestaDatos); // Si no hay búsqueda, se muestran todos los eventos filtrados por deporte
+      setNoHayEventos(false);
+    } else {
+      const filteredEvents = events.filter(
+        (event) =>
+          event.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          event.sport.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+
+      setEvents(filteredEvents);
+      setNoHayEventos(filteredEvents.length === 0);
+    }
+  };
+
+  useEffect(() => {
+    console.log("Datos recibidos del componente hijo:", switchStates);
+  }, [switchStates]); // Observa el cambio en switchStates
+
+
+
+  // Manejar cambios en los switches
+  const handleSwitchChange = (switchState) => {
+    switchStatesRef.current = switchState;
+
+    const activeSports = Object.keys(switchState).filter(
+      (sport) => switchState[sport] === true
+    );
+
+    // Realizar una nueva petición con los deportes activos
+    fetchEvents(activeSports);
+  };
+
+  // Llamada inicial a la URL con todos los deportes activos
+  useEffect(() => {
+        switchStatesRef.current = initialSwitchStates;
+
+    // Filtrar eventos por los deportes activos
+    const activeSports = Object.keys(initialSwitchStates).filter(
+      (sport) => initialSwitchStates[sport] === true
+    );
+
+    fetchEvents(activeSports);
+  }, []); // Se ejecuta solo una vez cuando se carga la página
+
   return (
-    <div style={{
-      borderRadius: '3px',
-      border: '1px solid black',
-      margin: '1%',
-    }}>
-      <Header style={{ display: "flex", justifyContent: "center", alignItems: "center" }}/>
-      <SearchBar onSearch={handleSearch} />
-      {/* Mostrar eventos solo si NoHayEventos es falso */}
-      {!NoHayEventos && <EventList events={events} />}
-      {NoHayEventos && <div>No se encontraron eventos.</div>} {/* Mensaje cuando no hay eventos */}
-    </div>
+    <Grid container sx={{ ...estilosContainer, overflowX: "hidden" }}>
+      <Grid
+        xs={12}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+        }}
+      >
+        <HeaderBar sx={{ width: "70%" }} />
+      </Grid>
+      <Box sx={{ width: "100%" }}>
+        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 1, md: 1 }}>
+          <Grid size={12}>
+            <CardSupe />
+          </Grid>
+          <Grid size={6}>
+            <SeleccionarDeporte switchStatesAttribute={handleSwitchChange} />
+          </Grid>
+
+          <Grid size={6}>
+            <SearchBar onSearch={handleSearch} />
+          </Grid>
+        </Grid>
+      </Box>
+      {!NoHayEventos && (
+        <Box
+          sx={{
+            width: "100%",
+            alignItems: "center",
+          }}
+        >
+          <IndividualCards events={events} />
+        </Box>
+      )}
+      {NoHayEventos && (
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+
+            fontWeight: "bold",
+            fontSize: "2.5rem",
+          }}
+        >
+          <div>No se encontraron eventos.</div>
+        </Box>
+      )}{" "}
+    </Grid>
   );
 }
-
 
 export default App;
