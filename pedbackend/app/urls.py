@@ -1,7 +1,12 @@
-from django.urls import path
-from . import views
+from django.urls import path, include
+from rest_framework import routers
+from app import views
+
 #from .views import json_events
 
+router = routers.DefaultRouter()
+router.register(r'event', views.EventViewSet)
+
 urlpatterns=[
-    path('json_events/', views.json_events, name='json_items'),
+    path('', include(router.urls)),
 ]
