@@ -18,9 +18,6 @@ Se pueden encontrar las dependencias en el archivo ```requirements.txt```
 Para instalar las dependencias se debe ejecutar el comando:</br>
 ```pip install -r requirements.txt```
 
-
-Aquí tienes una descripción que puedes añadir al archivo `README.md` sobre los endpoints de la aplicación Django:
-
 ---
 
 ## Endpoints de la Aplicación del backend
