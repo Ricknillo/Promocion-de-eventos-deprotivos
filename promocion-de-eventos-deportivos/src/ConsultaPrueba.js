@@ -7,7 +7,7 @@
 function App() {
 
 const [newEvents, setnewEvents] = useState([]);
-const url = "http://127.0.0.1:8000/json_events/";
+const url = "http://127.0.0.1:8000/event/";
 
 
 const fetchJson = async () => {

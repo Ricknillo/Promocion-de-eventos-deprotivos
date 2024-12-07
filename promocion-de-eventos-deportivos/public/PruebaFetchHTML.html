@@ -10,7 +10,7 @@
     
     <script>
         // Realizar una petición GET a http://127.0.0.1:8000/json_events/
-        fetch('http://127.0.0.1:8000/json_events/')
+        fetch('http://127.0.0.1:8000/event/')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Error en la petición: ' + response.statusText);

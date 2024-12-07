@@ -172,7 +172,7 @@ function App() {
         return;
       }
 
-      const response = await fetch("http://127.0.0.1:8000/json_events/");
+      const response = await fetch("http://127.0.0.1:8000/event/");
       if (!response.ok) {
         throw new Error("Error en la petición: " + response.statusText);
       }
