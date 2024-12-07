@@ -1,3 +1,4 @@
+.env
 /venv/*
 /pedbackend/venv/*
 /pedbackend/pedbackend/__pycache__/*
